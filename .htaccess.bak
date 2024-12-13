@@ -1,0 +1,48 @@
+# Mengamankan file .htaccess
+<Files .htaccess>
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Pengalihan HTTP ke HTTPS
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# URL Friendly
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([a-zA-Z0-9_-]+)/?$ $1.php [L]
+
+# Mencegah Hotlinking
+RewriteEngine On
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^https://(www\.)?domainanda.com [NC]
+RewriteRule \.(jpg|jpeg|png|gif)$ - [F]
+
+# Mengontrol Cache Browser
+<FilesMatch "\.(jpg|jpeg|png|gif|css|js)$">
+    Header set Cache-Control "max-age=2592000, public"
+</FilesMatch>
+
+# Keamanan Admin (gunakan autentikasi dasar)
+<Files "admin.php">
+    AuthType Basic
+    AuthName "Restricted Access"
+    AuthUserFile /path/to/.htpasswd
+    Require valid-user
+</Files>
+
+# Membatasi akses IP untuk admin
+<Files "admin.php">
+    Order Deny,Allow
+    Deny from all
+    Allow from 123.456.789.0
+</Files>
+
+# Halaman 404 Kustom
+ErrorDocument 404 /404.html
+
+# Membatasi ukuran upload file
+php_value upload_max_filesize 10M
+php_value post_max_size 10M

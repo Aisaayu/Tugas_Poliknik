@@ -1,0 +1,28 @@
+<!-- navbar.html -->
+<nav>
+    <ul>
+        <li><a href="index.php">Home</a></li>
+
+        <?php if (isset($_SESSION['admin_id'])) { ?>
+            <li><a href="./admin/dashboard.php">Dashboard Admin</a></li>
+            <li><a href="manage_dokter.php">Manage Dokter</a></li>
+            <li><a href="manage_poli.php">Manage Poli</a></li>
+            <li><a href="manage_pasien.php">Manage Pasien</a></li>
+            <li><a href="manage_obat.php">Manage Obat</a></li>
+            <li><a href="logout.php">Logout</a></li>
+        <?php } elseif (isset($_SESSION['dokter_id'])) { ?>
+            <li><a href="dokter_dashboard.php">Dashboard Dokter</a></li>
+            <li><a href="riwayat_pasien.php">Riwayat Pemeriksaan</a></li>
+            <li><a href="logout.php">Logout</a></li>
+        <?php } elseif (isset($_SESSION['pasien_id'])) { ?>
+            <li><a href="../pasien/dashboard.php">Dashboard Pasien</a></li>
+            <li><a href="../pasien/pendaftaran_poli.php">Pendaftaran Poli</a></li>
+            <li><a href="../pasien/pendaftaran_pasien_baru.php">Pendaftaran Pasien Baru</a></li>
+            <li><a href="../pasien/">Logout</a></li>
+        <?php } else { ?>
+            <li><a href="login_admin.php">Login Admin</a></li>
+            <li><a href="login_dokter.php">Login Dokter</a></li>
+            <li><a href="login_pasien.php">Login Pasien</a></li>
+        <?php } ?>
+    </ul>
+</nav>
